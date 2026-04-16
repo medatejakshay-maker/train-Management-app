@@ -1,6 +1,23 @@
 import java.util.*;
 
 // ===============================
+// Bogie Class (Custom Object)
+// ===============================
+class Bogie {
+    String name;
+    int capacity;
+
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    public void display() {
+        System.out.println(name + " -> Capacity: " + capacity);
+    }
+}
+
+// ===============================
 // Main Class
 // ===============================
 public class train_app {
@@ -10,19 +27,22 @@ public class train_app {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create HashMap for bogie-capacity mapping
-        HashMap<String, Integer> bogieCapacity = new HashMap<>();
+        // Create List of Bogies
+        List<Bogie> bogies = new ArrayList<>();
 
-        // ===== INSERT DATA =====
-        bogieCapacity.put("Sleeper", 72);
-        bogieCapacity.put("AC Chair", 54);
-        bogieCapacity.put("First Class", 24);
+        // ===== ADD BOGIES =====
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 54));
+        bogies.add(new Bogie("First Class", 24));
 
-        // ===== DISPLAY DATA =====
-        System.out.println("\nBogie Capacity Details:");
+        // ===== SORT USING COMPARATOR =====
+        bogies.sort(Comparator.comparingInt(b -> b.capacity));
 
-        for (Map.Entry<String, Integer> entry : bogieCapacity.entrySet()) {
-            System.out.println(entry.getKey() + " -> Capacity: " + entry.getValue());
+        // ===== DISPLAY SORTED LIST =====
+        System.out.println("\nBogies Sorted by Capacity (Ascending):");
+
+        for (Bogie b : bogies) {
+            b.display();
         }
 
         System.out.println("\nProgram continues...");
