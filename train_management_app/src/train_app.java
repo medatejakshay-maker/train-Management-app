@@ -1,7 +1,8 @@
 import java.util.*;
+import java.util.stream.*;
 
 // ===============================
-// Bogie Class (Custom Object)
+// Bogie Class
 // ===============================
 class Bogie {
     String name;
@@ -27,20 +28,30 @@ public class train_app {
         // Welcome Message
         System.out.println("=== Train Consist Management App ===");
 
-        // Create List of Bogies
+        // ===== ORIGINAL LIST =====
         List<Bogie> bogies = new ArrayList<>();
-
-        // ===== ADD BOGIES =====
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 54));
         bogies.add(new Bogie("First Class", 24));
 
-        // ===== SORT USING COMPARATOR =====
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
+        System.out.println("\nAll Bogies:");
+        for (Bogie b : bogies) {
+            b.display();
+        }
 
-        // ===== DISPLAY SORTED LIST =====
-        System.out.println("\nBogies Sorted by Capacity (Ascending):");
+        // ===== STREAM FILTER =====
+        List<Bogie> filteredBogies = bogies.stream()
+                .filter(b -> b.capacity > 60)   // condition
+                .collect(Collectors.toList());
 
+        // ===== DISPLAY FILTERED RESULT =====
+        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        for (Bogie b : filteredBogies) {
+            b.display();
+        }
+
+        // ===== VERIFY ORIGINAL LIST UNCHANGED =====
+        System.out.println("\nOriginal List After Filtering (Unchanged):");
         for (Bogie b : bogies) {
             b.display();
         }
