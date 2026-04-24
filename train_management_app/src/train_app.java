@@ -7,7 +7,7 @@ import java.util.stream.*;
 class Bogie {
     String name;
     int capacity;
-    String type; // Passenger / Goods
+    String type;
 
     public Bogie(String name, int capacity, String type) {
         this.name = name;
@@ -37,24 +37,20 @@ public class train_app {
         bogies.add(new Bogie("AC Chair", 54, "Passenger"));
         bogies.add(new Bogie("First Class", 24, "Passenger"));
         bogies.add(new Bogie("Cargo Rectangular", 100, "Goods"));
-        bogies.add(new Bogie("Cargo Cylindrical", 120, "Goods"));
 
-        // ===== GROUPING =====
-        Map<String, List<Bogie>> groupedBogies =
-                bogies.stream()
-                        .collect(Collectors.groupingBy(b -> b.type));
-
-        // ===== DISPLAY GROUPED DATA =====
-        System.out.println("\nGrouped Bogies:");
-
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-
-            System.out.println("\nCategory: " + entry.getKey());
-
-            for (Bogie b : entry.getValue()) {
-                b.display();
-            }
+        // ===== DISPLAY ALL =====
+        System.out.println("\nAll Bogies:");
+        for (Bogie b : bogies) {
+            b.display();
         }
+
+        // ===== AGGREGATION USING STREAM =====
+        int totalSeats = bogies.stream()
+                .map(b -> b.capacity)          // extract capacity
+                .reduce(0, Integer::sum);      // sum all values
+
+        // ===== DISPLAY RESULT =====
+        System.out.println("\nTotal Seating Capacity of Train: " + totalSeats);
 
         // ===== VERIFY ORIGINAL LIST =====
         System.out.println("\nOriginal List (Unchanged):");
