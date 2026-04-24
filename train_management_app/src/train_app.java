@@ -1,96 +1,65 @@
-import java.util.*;
-
 /**
- * ============================================================
- * MAIN CLASS - train_app
- * ============================================================
+ * ==========================================================
+ * MAIN CLASS - UseCase16TrainConsistMgmt
+ * ==========================================================
  *
- * Use Case 15: Safe Cargo Assignment using try-catch-finally
+ * Use Case 16: Sort Passenger Bogies by Capacity (Bubble Sort)
  *
  * Description:
- * Handles unsafe cargo assignments at runtime without crashing.
+ * This class demonstrates manual sorting using Bubble Sort
+ * without using built-in Java sorting methods.
  *
- * @version 15.0
+ * ==========================================================
  */
 
 public class train_app {
 
-    // ---------------- CUSTOM RUNTIME EXCEPTION ----------------
-    static class CargoSafetyException extends RuntimeException {
-        public CargoSafetyException(String message) {
-            super(message);
-        }
-    }
-
-    // ---------------- GOODS BOGIE MODEL ----------------
-    static class GoodsBogie {
-        String type;
-        String cargo;
-
-        GoodsBogie(String type) {
-            this.type = type;
-        }
-
-        // Cargo assignment with validation
-        void assignCargo(String cargo) {
-            try {
-                // Safety rule
-                if (type.equalsIgnoreCase("Rectangular") &&
-                        cargo.equalsIgnoreCase("Petroleum")) {
-
-                    throw new CargoSafetyException(
-                            "Unsafe: Rectangular bogie cannot carry Petroleum"
-                    );
-                }
-
-                this.cargo = cargo;
-                System.out.println("Cargo assigned successfully ✅");
-
-            } catch (CargoSafetyException e) {
-                System.out.println("Error ❌: " + e.getMessage());
-
-            } finally {
-                System.out.println("Assignment attempt completed.\n");
-            }
-        }
-
-        public String toString() {
-            return type + " -> " + (cargo == null ? "No Cargo" : cargo);
-        }
-    }
-
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-        List<GoodsBogie> bogies = new ArrayList<>();
+        System.out.println("=== Train Consist Management App ===");
+        System.out.println("UC16: Bubble Sort - Passenger Bogie Capacities\n");
 
-        System.out.println("=== Safe Cargo Assignment System ===");
+        // Step 1: Create array of passenger bogie capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        System.out.print("Enter number of bogies: ");
-        int n = sc.nextInt();
-        sc.nextLine();
+        System.out.println("Original Capacities:");
+        printArray(capacities);
 
-        // Create bogies
-        for (int i = 0; i < n; i++) {
-            System.out.print("\nEnter bogie type (Rectangular/Cylindrical): ");
-            String type = sc.nextLine();
-            bogies.add(new GoodsBogie(type));
+        // Step 2: Apply Bubble Sort
+        bubbleSort(capacities);
+
+        // Step 3: Display sorted result
+        System.out.println("\nSorted Capacities (Ascending):");
+        printArray(capacities);
+    }
+
+    // Bubble Sort Logic
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+
+        // Outer loop for passes
+        for (int i = 0; i < n - 1; i++) {
+
+            // Inner loop for comparisons
+            for (int j = 0; j < n - i - 1; j++) {
+
+                // Compare adjacent elements
+                if (arr[j] > arr[j + 1]) {
+
+                    // Swap logic
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
         }
+    }
 
-        // Assign cargo
-        for (int i = 0; i < bogies.size(); i++) {
-            System.out.print("Enter cargo for bogie " + (i + 1) + ": ");
-            String cargo = sc.nextLine();
-
-            bogies.get(i).assignCargo(cargo);
+    // Utility method to print array
+    public static void printArray(int[] arr) {
+        for (int val : arr) {
+            System.out.print(val + " ");
         }
-
-        // Display final state
-        System.out.println("\n--- Final Bogie Status ---");
-        for (GoodsBogie b : bogies) {
-            System.out.println(b);
-        }
-
-        sc.close();
+        System.out.println();
     }
 }
