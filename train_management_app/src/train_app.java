@@ -1,6 +1,5 @@
 package train_app;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class train_app {
@@ -8,49 +7,48 @@ public class train_app {
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
-        System.out.println("UC19: Binary Search for Bogie ID");
+        System.out.println("UC20: Exception Handling During Search Operations");
         System.out.println();
 
-        // Step 1: Create an array (can be unsorted)
-        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+        // Step 1: Create bogie array (try empty {} to test exception)
+        String[] bogieIds = {}; // change to {"BG101","BG205","BG309"} to test normal flow
 
-        // Step 2: Sort the array (mandatory for Binary Search)
-        Arrays.sort(bogieIds);
-
-        System.out.println("Sorted Bogie IDs:");
-        System.out.println(Arrays.toString(bogieIds));
-
-        // Step 3: Take user input
         Scanner sc = new Scanner(System.in);
-        System.out.print("\nEnter Bogie ID to search: ");
-        String key = sc.nextLine();
 
-        // Step 4: Binary Search logic
-        int low = 0;
-        int high = bogieIds.length - 1;
-        boolean found = false;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-
-            int comparison = bogieIds[mid].compareTo(key);
-
-            if (comparison == 0) {
-                System.out.println("Bogie Found at position: " + mid);
-                found = true;
-                break;
-            } else if (comparison < 0) {
-                low = mid + 1; // search right half
-            } else {
-                high = mid - 1; // search left half
+        try {
+            // Step 2: Fail-fast validation
+            if (bogieIds.length == 0) {
+                throw new IllegalStateException("No bogies available. Cannot perform search.");
             }
-        }
 
-        // Step 5: If not found
-        if (!found) {
-            System.out.println("Bogie ID not found in the train consist.");
-        }
+            // Step 3: Take user input
+            System.out.print("Enter Bogie ID to search: ");
+            String key = sc.nextLine();
 
-        sc.close();
+            // Step 4: Perform Linear Search (after validation)
+            boolean found = false;
+
+            for (String id : bogieIds) {
+                if (id.equals(key)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            // Step 5: Display result
+            if (found) {
+                System.out.println("Bogie Found in the train consist.");
+            } else {
+                System.out.println("Bogie ID not found.");
+            }
+
+        } catch (IllegalStateException e) {
+            // Step 6: Handle exception gracefully
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            // Step 7: Always executes
+            System.out.println("Search operation completed.");
+            sc.close();
+        }
     }
 }
